@@ -13,23 +13,6 @@
 #include <wifi_config.h>
 #include "wifi.h"
 
-
-static void wifi_init() {
-    // wifi_manager_start();
-
-	/* register a callback as an example to how you can integrate your code with the wifi manager */
-	// wifi_manager_set_callback(EVENT_STA_GOT_IP, &on_wifi_ready);
-
-    // struct sdk_station_config wifi_config = {
-    //     .ssid = WIFI_SSID,
-    //     .password = WIFI_PASSWORD,
-    // };
-
-    // sdk_wifi_set_opmode(STATION_MODE);
-    // sdk_wifi_station_set_config(&wifi_config);
-    // sdk_wifi_station_connect();
-}
-
 const int top_gpio = 14;
 bool top_on = false;
 const int bottom_gpio = 12;
