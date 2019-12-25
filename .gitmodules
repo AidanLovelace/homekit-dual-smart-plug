@@ -19,3 +19,6 @@
 [submodule "components/qrcode"]
 	path = components/qrcode
 	url = https://github.com/maximkulkin/esp-qrcode.git
+[submodule "components/esp-open-rtos"]
+	path = components/esp-open-rtos
+	url = https://github.com/SuperHouse/esp-open-rtos.git
