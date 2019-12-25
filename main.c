@@ -137,7 +137,7 @@ void on_wifi_event(wifi_config_event_t event) {
         printf("Connected to WiFi\n");
         homekit_server_init(&config);
         paired = homekit_is_paired();
-        led_status = led_status_init(led_gpio);
+        led_status = led_status_init(led_gpio, 1);
     } else if (event == WIFI_CONFIG_DISCONNECTED) {
         printf("Disconnected from WiFi\n");
     }
