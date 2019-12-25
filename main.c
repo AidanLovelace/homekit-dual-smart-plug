@@ -11,6 +11,14 @@
 #include <homekit/homekit.h>
 #include <homekit/characteristics.h>
 #include <wifi_config.h>
+#include <led_status.h>
+
+
+static led_status_pattern_t unpaired = { .n=2, .delay=(int[]){ 1000, 1000 } };
+static led_status_pattern_t pairing = { .n=5, .delay=(int[]){ 100, 100, 100, 600 } };
+static led_status_pattern_t normal_mode = { 2, (int[]){ 100, 9900 } };
+
+const int led_gpio = 2;
 
 const int top_gpio = 14;
 bool top_on = false;
@@ -96,16 +104,40 @@ homekit_accessory_t *accessories[] = {
     NULL
 };
 
+static led_status_t led_status;
+static bool paired = false;
+
+void on_event(homekit_event_t event) {
+    if (event == HOMEKIT_EVENT_SERVER_INITIALIZED) {
+        led_status_set(led_status, paired ? &normal_mode : &unpaired);
+    }
+    else if (event == HOMEKIT_EVENT_CLIENT_CONNECTED) {
+        if (!paired)
+            led_status_set(led_status, &pairing);
+    }
+    else if (event == HOMEKIT_EVENT_CLIENT_DISCONNECTED) {
+        if (!paired)
+            led_status_set(led_status, &unpaired);
+    }
+    else if (event == HOMEKIT_EVENT_PAIRING_ADDED || event == HOMEKIT_EVENT_PAIRING_REMOVED) {
+        paired = homekit_is_paired();
+        led_status_set(led_status, paired ? &normal_mode : &unpaired);
+    }
+}
+
 homekit_server_config_t config = {
     .accessories = accessories,
     .password = PASSWORD,
     .setupId = PRODUCT_4_ID,
+    .on_event = on_event,
 };
 
 void on_wifi_event(wifi_config_event_t event) {
     if (event == WIFI_CONFIG_CONNECTED) {
         printf("Connected to WiFi\n");
         homekit_server_init(&config);
+        paired = homekit_is_paired();
+        led_status = led_status_init(led_gpio);
     } else if (event == WIFI_CONFIG_DISCONNECTED) {
         printf("Disconnected from WiFi\n");
     }

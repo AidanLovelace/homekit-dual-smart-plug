@@ -4,6 +4,7 @@ EXTRA_COMPONENTS = \
 	extras/http-parser \
 	extras/dhcpserver \
 	$(abspath ./components/wifi_config) \
+	$(abspath ./components/led-status) \
 	$(abspath ./components/cJSON) \
 	$(abspath ./components/wolfssl) \
 	$(abspath ./components/homekit)
