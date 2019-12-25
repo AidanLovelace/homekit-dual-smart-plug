@@ -11,7 +11,6 @@
 #include <homekit/homekit.h>
 #include <homekit/characteristics.h>
 #include <wifi_config.h>
-#include "wifi.h"
 
 const int top_gpio = 14;
 bool top_on = false;
@@ -115,7 +114,6 @@ void on_wifi_event(wifi_config_event_t event) {
 void user_init(void) {
     uart_set_baud(0, 115200);
 
-    wifi_init();
     top_init();
     bottom_init();
     wifi_config_init2(PRODUCT_FULL_NAME, PASSWORD, on_wifi_event);
